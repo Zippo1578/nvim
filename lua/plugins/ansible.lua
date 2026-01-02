@@ -1,8 +1,9 @@
 -- ================================================================================================
--- TITLE : ccc.nvim
+-- TITLE : ansible-vim
 -- LINKS :
---   > github : https://github.com/uga-rosa/ccc.nvim
--- ABOUT : colour picker & highlighter for neovim
+--   > github : https://github.com/pearofducks/ansible-vim
+--   > github : https://github.com/mfussenegger/nvim-lint
+-- ABOUT : Adds Ansible syntax support and automatically lints Ansible YAML and Python files
 -- ================================================================================================
 
 return {
@@ -26,22 +27,4 @@ return {
       })
     end,
   },
-
-  -- Ensures linters and formatters are installed.
-  {
-    'williamboman/mason.nvim',
-    opts = {
-      ensure_installed = {
-        'ansible-lint',
-        'ruff',
-        'yamlfix',
-        'black',
-        'ansiblels',
-        'pyright',
-        'bashls',
-        'yamlls',
-      },
-    },
-  },
 }
-
