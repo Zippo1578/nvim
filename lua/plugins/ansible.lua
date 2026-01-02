@@ -1,3 +1,10 @@
+-- ================================================================================================
+-- TITLE : ccc.nvim
+-- LINKS :
+--   > github : https://github.com/uga-rosa/ccc.nvim
+-- ABOUT : colour picker & highlighter for neovim
+-- ================================================================================================
+
 return {
   -- Provides Ansible syntax highlighting and other niceties.
   -- Filetype detection is handled in init.lua to ensure correctness.

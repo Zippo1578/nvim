@@ -1,7 +1,7 @@
 ## Features
 
 -   **Plugin Manager**: Fast and easy plugin management with [lazy.nvim](https://github.com/folke/lazy.nvim).
--   **Theme**: A beautiful, clean theme with [tokyonight.nvim](https://github.com/folke/tokyonight.nvim).
+-   **Theme**: A beautiful, clean theme with [nightfox.nvim](https://github.com/EdenEast/nightfox.nvim).
 -   **LSP**: Full language server protocol support via [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) and [mason.nvim](https://github.com/williamboman/mason.nvim) for automatic LSP server installation.
     -   Pre-configured for `ansible-ls`, `pyright`, and `yamlls`.
 -   **Auto-Completion**: Intelligent code completion with [nvim-cmp](https://github.com/hrsh7th/nvim-cmp).
@@ -11,8 +11,6 @@
 -   **Git Integration**: Seamless Git integration with [gitsigns](https://github.com/lewis6991/gitsigns.nvim) and a beautiful UI with [LazyGit](https://github.com/jesseduffield/lazygit).
 -   **UI Enhancements**: A modern command line with [noice.nvim](https://github.com/folke/noice.nvim), a helpful keybinding menu with [which-key.nvim](https://github.com/folke/which-key.nvim), and a sleek statusline with [lualine](https://github.com/nvim-lualine/lualine.nvim).
 
-## Screenshot
-![Example Screenshot](./example.png)
 
 ## Installation
 
