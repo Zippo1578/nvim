@@ -5,8 +5,8 @@ LABEL maintainer="stefzippo@gmail.com"
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ARG USERNAME=zippo
-ARG UID=1000
-ARG GID=1000
+ARG UID=1001
+ARG GID=1001
 
 ENV USERNAME=${USERNAME}
 ENV HOME=/home/${USERNAME}

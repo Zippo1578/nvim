@@ -1,0 +1,11 @@
+services:
+  nvim:
+    build: .
+    image: nvim-ubuntu-minimal:latest
+    container_name: nvim-ubuntu
+    tty: true
+    stdin_open: true
+    # disable network for runtime (no internet access after build)
+    #network_mode: "none"
+    restart: "no"
+

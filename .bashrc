@@ -192,6 +192,6 @@ export NVM_DIR="$HOME/.nvm"
 # PIP Envirment for ansible + ansible-lint
 source ~/.venvs/bin/activate
 
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
+export LANG=C.UTF-8
+export LC_ALL=C.UTF-8
 
