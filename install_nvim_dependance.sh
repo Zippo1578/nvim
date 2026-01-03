@@ -250,12 +250,6 @@ source ${BASHRC}
   -c 'lua require("nvim-treesitter.install").update({force = true}):wait()' \
   -c 'qa'
 
-# "$LOCAL_BIN/nvim" --appimage-extract-and-run --headless \
-#   -c 'Lazy! sync' \
-#   -c 'lua require("nvim-treesitter.install").update({force = true}):wait()' \
-#   -c 'qa'
-
-
 ### -------------------------
 ### Done
 ### -------------------------
