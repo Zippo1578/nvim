@@ -23,13 +23,6 @@ RUN groupadd -g ${GID} ${USERNAME} && \
     echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 WORKDIR ${HOME}
-
-# Copy files
-COPY --chown=${USERNAME}:${USERNAME} ./install_nvim_dependance.sh /tmp/install_nvim_dependance.sh
-COPY --chown=${USERNAME}:${USERNAME} ./.bashrc ${HOME}/.bashrc
-
-RUN chmod +x /tmp/install_nvim_dependance.sh
-
 USER ${USERNAME}
 
 ENV PATH="$HOME/.local/bin:$PATH"
@@ -40,7 +33,13 @@ RUN python3 -m venv ${HOME}/.venvs && \
     pip install --upgrade pip setuptools wheel && \
     pip install ansible ansible-lint pynvim
 
-RUN /tmp/install_nvim_dependance.sh
+# Copy files
+COPY --chown=${USERNAME}:${USERNAME} ./install_nvim_dependance.sh ${HOME}/install_nvim_dependance.sh
+COPY --chown=${USERNAME}:${USERNAME} ./.bashrc ${HOME}/.bashrc
+
+RUN chmod +x ${HOME}/install_nvim_dependance.sh
+
+RUN ${HOME}/install_nvim_dependance.sh
 
 ENTRYPOINT ["/bin/bash"]
 CMD ["-l"]
