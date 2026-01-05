@@ -250,7 +250,7 @@ source ${BASHRC}
   -c 'Lazy load mason.nvim' \
   -c 'lua require("nvim-treesitter.install").update({force = true}):wait()' \
   -c 'Lazy load mason.nvim mason-lspconfig.nvim nvim-lspconfig mason-tool-installer.nvim' \
-  -c 'MasonInstall lua-language-server ansible-language-server bash-language-server stylua' \
+  -c 'MasonInstall lua-language-server ansible-language-server bash-language-server stylua bash-language-server'  \
   -c 'qa'
 
 ### -------------------------
