@@ -64,6 +64,7 @@ Your **Leader key** is `Space`. Press it before any `<leader>` shortcut.
 | `<leader>se`    | Make all splits **equal size**.          |
 | `<leader>to/tx` | Open/Close a **new tab**.                |
 | `<leader>tn/tp` | Go to the **next** / **previous tab**.   |
+| gc            | In VisualMode command highlights    |
 
 #### 🧠 LSP & Completion
 

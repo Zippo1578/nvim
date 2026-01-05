@@ -9,52 +9,95 @@
 -- ================================================================================================
 
 return {
-  {
-    "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "mason-org/mason.nvim",
-      "mason-org/mason-lspconfig.nvim",
-      "WhoIsSethDaniel/mason-tool-installer.nvim",
-    },
-    config = function()
-      -- Mason core
-      require("mason").setup()
+	{
+		"neovim/nvim-lspconfig",
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			"mason-org/mason.nvim",
+			"mason-org/mason-lspconfig.nvim",
+			"WhoIsSethDaniel/mason-tool-installer.nvim",
+		},
+		config = function()
+			----------------------
+			-- Mason core
+			----------------------
+			require("mason").setup()
 
-      require("mason-lspconfig").setup({
-        ensure_installed = {
-          "lua_ls",
-          "ansiblels",
-          "bashls",
-          "yamlls",
-        },
-        automatic_installation = true,
-      })
+			----------------------
+			-- LSP server installer
+			----------------------
+			require("mason-lspconfig").setup({
+				ensure_installed = {
+					"lua_ls",
+					"ansiblels",
+					"bashls",
+					"yamlls",
+				},
+				automatic_installation = true,
+			})
 
-      require("mason-tool-installer").setup({
-        ensure_installed = {
-          "lua_ls",
-          "ansiblels",
-          "bashls",
-          "stylua",
-        },
-      })
+			----------------------
+			-- Formatters & Linters installer
+			----------------------
+			require("mason-tool-installer").setup({
+				ensure_installed = {
+					"stylua",
+					"shfmt",
+					"prettierd",
+					"prettier",
+				},
+			})
 
-      ---- Load per-server configs
-      --require("lsp.lua_ls")
-      --require("lsp.ansiblels")
+			----------------------
+			-- Enable LSP servers
+			----------------------
+			vim.lsp.enable({
+				"lua_ls",
+				"ansiblels",
+				"bashls",
+				"yamlls",
+			})
 
-      -- Enable servers (Neovim 0.12 native API)
-      --vim.lsp.enable({
-      --  "lua_ls",
-      --  "ansiblels",
-      --  "bashls",
-      --})
-    end,
-  },
+			----------------------
+			-- Diagnostic Config (your preferred version)
+			----------------------
+			vim.diagnostic.config({
+				severity_sort = true,
+				float = { border = "rounded", source = "if_many" },
+				underline = { severity = vim.diagnostic.severity.ERROR },
+				signs = {
+					text = {
+						[vim.diagnostic.severity.ERROR] = "󰅚 ",
+						[vim.diagnostic.severity.WARN] = "󰀪 ",
+						[vim.diagnostic.severity.INFO] = "󰋽 ",
+						[vim.diagnostic.severity.HINT] = "󰌶 ",
+					},
+				},
+				virtual_text = {
+					source = "if_many",
+					spacing = 2,
+					format = function(diagnostic)
+						local diagnostic_message = {
+							[vim.diagnostic.severity.ERROR] = diagnostic.message,
+							[vim.diagnostic.severity.WARN] = diagnostic.message,
+							[vim.diagnostic.severity.INFO] = diagnostic.message,
+							[vim.diagnostic.severity.HINT] = diagnostic.message,
+						}
+						return diagnostic_message[diagnostic.severity]
+					end,
+				},
+			})
 
-  { "mason-org/mason.nvim", cmd = "Mason" },
-  { "mason-org/mason-lspconfig.nvim" },
-  { "WhoIsSethDaniel/mason-tool-installer.nvim" },
+			----------------------
+			-- Diagnostic keymaps
+			----------------------
+			vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Show diagnostics" })
+			vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
+			vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+		end,
+	},
+
+	{ "mason-org/mason.nvim", cmd = "Mason" },
+	{ "mason-org/mason-lspconfig.nvim" },
+	{ "WhoIsSethDaniel/mason-tool-installer.nvim" },
 }
-

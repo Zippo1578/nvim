@@ -48,16 +48,19 @@ vim.keymap.set("v", "<M-Up>", ":m '>-2<CR>gv=gv")
 vim.keymap.set("v", "<M-Down>", ":m '>+1<CR>gv=gv")
 
 -- Flowting Termin with FTerm
-vim.keymap.set('n', '<leader>z', ":lua require('FTerm').open()<CR>") --open term
-vim.keymap.set('t', '<Esc>', '<C-\\><C-n><CMD>lua require("FTerm").close()<CR>') --preserves session
+vim.keymap.set("n", "<leader>z", ":lua require('FTerm').open()<CR>") --open term
+vim.keymap.set("t", "<Esc>", '<C-\\><C-n><CMD>lua require("FTerm").close()<CR>') --preserves session
 
 -- Run ansible-lint on current file
 vim.keymap.set("n", "<leader>al", function()
-  print(vim.fn.system("/home/zippo/.venvs/bin/ansible-lint " .. vim.fn.expand("%")))
+	print(vim.fn.system("/home/zippo/.venvs/bin/ansible-lint " .. vim.fn.expand("%")))
 end, { noremap = true, silent = true, desc = "Run ansible-lint on current file" })
 
 -- Run ansible-lint --fix on current file
 vim.keymap.set("n", "<leader>alf", function()
-  print(vim.fn.system("/home/zippo/.venvs/bin/ansible-lint --fix " .. vim.fn.expand("%")))
+	local file = vim.fn.expand("%")
+	vim.cmd("write") -- save buffer first
+	vim.fn.system("/home/zippo/.venvs/bin/ansible-lint --fix " .. file)
+	vim.cmd("edit") -- reload file
+	print("ansible-lint --fix applied and buffer reloaded")
 end, { noremap = true, silent = true, desc = "Run ansible-lint --fix on current file" })
-
