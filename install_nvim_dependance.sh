@@ -241,13 +241,16 @@ echo "⚙️  Running Neovim headless setup"
 # Reload Bashrc
 source ${BASHRC}
 
+# issue https://github.com/NvChad/ui/issues/507
+# :MasonToolsInstallSync dosnt work in headless
 "$LOCAL_BIN/nvim" --appimage-extract-and-run --headless \
   -c 'Lazy! sync' \
   -c 'Lazy load nvim-treesitter' \
   -c 'TSUpdate' \
   -c 'Lazy load mason.nvim' \
-  -c 'MasonUpdate' \
   -c 'lua require("nvim-treesitter.install").update({force = true}):wait()' \
+  -c 'Lazy load mason.nvim mason-lspconfig.nvim nvim-lspconfig mason-tool-installer.nvim' \
+  -c 'MasonInstall lua-language-server ansible-language-server bash-language-server stylua' \
   -c 'qa'
 
 ### -------------------------

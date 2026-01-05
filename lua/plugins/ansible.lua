@@ -1,30 +1,46 @@
 -- ================================================================================================
--- TITLE : ansible-vim
+-- TITLE : ansible
+-- ABOUT : Ansible syntax highlighting and linting integration for Neovim.
 -- LINKS :
---   > github : https://github.com/pearofducks/ansible-vim
---   > github : https://github.com/mfussenegger/nvim-lint
--- ABOUT : Adds Ansible syntax support and automatically lints Ansible YAML and Python files
+-- INFO  : "print(vim.fn.system("/home/zippo/.venvs/bin/ansible-lint " .. vim.fn.expand("%")))"
+--   > ansible-vim: https://github.com/pearofducks/ansible-vim
+--   > nvim-lint  : https://github.com/mfussenegger/nvim-lint
 -- ================================================================================================
-
 return {
-  -- Provides Ansible syntax highlighting and other niceties.
-  -- Filetype detection is handled in init.lua to ensure correctness.
-  { 'pearofducks/ansible-vim' },
-
-  -- Linter for Ansible and Python.
   {
-    'mfussenegger/nvim-lint',
+    "mfussenegger/nvim-lint",
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
-      require('lint').linters_by_ft = {
-        ['yaml.ansible'] = { 'ansible-lint' },
-        python = { 'ruff' },
+      local lint = require("lint")
+      local efm = "%f:%l:%c: %m,%f:%l: %m"
+
+      lint.linters.ansible_lint = {
+        name = "ansible-lint",
+        cmd = vim.fn.exepath("ansible-lint"),
+        args = { "-p", "--nocolor" },
+        ignore_exitcode = true,
+        parser = require("lint.parser").from_errorformat(efm, {
+          source = "ansible-lint",
+          severity = vim.diagnostic.severity.INFO,
+        }),
       }
-      -- Automatically run linter on save.
-      vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+
+      lint.linters_by_ft = {
+        ["yaml.ansible"] = { "ansible_lint" },
+        python = { "pylint" }, -- "ruff" is possible
+      }
+
+      vim.api.nvim_create_autocmd("BufWritePost", {
         callback = function()
-          require('lint').try_lint()
+          lint.try_lint()
         end,
       })
     end,
   },
+
+  {
+    "pearofducks/ansible-vim",
+    ft = { "yaml.ansible", "ansible" },
+  },
 }
+

@@ -12,7 +12,7 @@ ENV USERNAME=${USERNAME}
 ENV HOME=/home/${USERNAME}
 
 RUN apt -y update && \
-    apt -y install ca-certificates git tar vim jq curl ripgrep luarocks fontconfig sudo make xclip gcc unzip wget \
+    apt -y install ca-certificates git tar vim jq curl ripgrep luarocks fontconfig sudo make tmux gcc unzip wget \
         python3 python3-pip python3-venv python3-pynvim && \
     apt -y remove neovim && \
     apt -y clean && rm -rf /var/lib/apt/lists/*
@@ -31,7 +31,7 @@ ENV APPIMAGE_EXTRACT_AND_RUN=1
 RUN python3 -m venv ${HOME}/.venvs && \
     source ${HOME}/.venvs/bin/activate && \
     pip install --upgrade pip setuptools wheel && \
-    pip install ansible ansible-lint pynvim
+    pip install ansible ansible-lint pynvim pylint
 
 # Copy files
 COPY --chown=${USERNAME}:${USERNAME} ./install_nvim_dependance.sh ${HOME}/install_nvim_dependance.sh
