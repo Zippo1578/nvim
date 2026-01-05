@@ -1,5 +1,5 @@
 return {
-	"glepnir/lspsaga.nvim",
+	"nvimdev/lspsaga.nvim",
 	lazy = false,
 	config = function()
 		require("lspsaga").setup({
