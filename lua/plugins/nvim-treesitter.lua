@@ -28,8 +28,8 @@ return {
 			"python",
 			"markdown",
 			"markdown_inline",
-	    "bash",
-      "yaml",
+			"bash",
+			"yaml",
 		})
 
 		-- Highlighting is now typically enabled via a simple vim command
