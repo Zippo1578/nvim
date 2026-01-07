@@ -101,3 +101,4 @@ Your **Leader key** is `Space`. Press it before any `<leader>` shortcut.
 | `gcc`         | Normal | **Comment/uncomment** a line.        |
 | `gc` + motion | Normal | Comment a block of text.             |
 | `<leader>nh`  | Normal | **Clear search highlights**.         |
+| `g*` / `*`  | Normal | Search pattern/exact word under cursor |
