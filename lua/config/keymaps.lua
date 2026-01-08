@@ -53,14 +53,14 @@ vim.keymap.set("t", "<Esc>", '<C-\\><C-n><CMD>lua require("FTerm").close()<CR>')
 
 -- Run ansible-lint on current file
 vim.keymap.set("n", "<leader>al", function()
-	print(vim.fn.system("/home/zippo/.venvs/bin/ansible-lint " .. vim.fn.expand("%")))
+	print(vim.fn.system("ansible-lint " .. vim.fn.expand("%")))
 end, { noremap = true, silent = true, desc = "Run ansible-lint on current file" })
 
 -- Run ansible-lint --fix on current file
 vim.keymap.set("n", "<leader>alf", function()
 	local file = vim.fn.expand("%")
 	vim.cmd("write") -- save buffer first
-	vim.fn.system("/home/zippo/.venvs/bin/ansible-lint --fix " .. file)
+	vim.fn.system("ansible-lint --fix " .. file)
 	vim.cmd("edit") -- reload file
 	print("ansible-lint --fix applied and buffer reloaded")
 end, { noremap = true, silent = true, desc = "Run ansible-lint --fix on current file" })
