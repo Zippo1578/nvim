@@ -64,7 +64,6 @@ vim.keymap.set("n", "<leader>alf", function()
 		return
 	end
 	vim.cmd("write") -- save buffer first
-	vim.notify("Running ansible-lint --fix...")
 	vim.system({ "ansible-lint", "--fix", file }, { text = true }, function(result)
 		-- This callback runs when the process exits
 		vim.schedule(function()
