@@ -37,7 +37,7 @@ RUN python3 -m venv ${HOME}/.venvs && \
 RUN mkdir -p .config/{tmux,nvim}
 COPY --chown=${USERNAME}:${USERNAME} ./install_nvim_dependance.sh ${HOME}/install_nvim_dependance.sh
 COPY --chown=${USERNAME}:${USERNAME} ./.bashrc ${HOME}/.bashrc
-COPY --chown=${USERNAME}:${USERNAME} ./tmux.conf ${HOME}/.config/tmux.conf
+COPY --chown=${USERNAME}:${USERNAME} ./tmux.conf ${HOME}/.config/tmux/tmux.conf
 
 RUN chmod +x ${HOME}/install_nvim_dependance.sh
 
