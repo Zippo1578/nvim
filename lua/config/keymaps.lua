@@ -56,23 +56,32 @@ vim.keymap.set("n", "<leader>al", function()
 	print(vim.fn.system("ansible-lint " .. vim.fn.expand("%")))
 end, { noremap = true, silent = true, desc = "Run ansible-lint on current file" })
 
--- Run ansible-lint --fix asynchronously on current file
+-- Run ansible-lint --fix on current file
 vim.keymap.set("n", "<leader>alf", function()
 	local file = vim.fn.expand("%:p")
 	if file == "" then
 		vim.notify("No file name", vim.log.levels.WARN)
 		return
 	end
-	vim.cmd("write") -- save buffer first
-	vim.system({ "ansible-lint", "--fix", file }, { text = true }, function(result)
-		-- This callback runs when the process exits
+
+	vim.cmd("write")
+
+	vim.system({ "ansible-lint", "--fix", "--nocolor", file }, { text = true }, function(result)
 		vim.schedule(function()
 			if result.code == 0 then
-				vim.notify("ansible-lint --fix finished successfully")
-				vim.cmd("checktime") -- reload file if it changed on disk
+				vim.notify("ansible-lint --fix finished")
 			else
 				vim.notify("ansible-lint failed:\n" .. (result.stderr or result.stdout or ""), vim.log.levels.ERROR)
 			end
+			vim.defer_fn(function()
+				vim.cmd("checktime")
+				if vim.bo.modified then
+					vim.cmd("edit!")
+					vim.lsp.buf_notify(0, "textDocument/didOpen", {
+						textDocument = vim.lsp.util.make_text_document_params(),
+					})
+				end
+			end, 100)
 		end)
 	end)
 end, { noremap = true, silent = true, desc = "Run ansible-lint --fix async on current file" })
