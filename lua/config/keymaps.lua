@@ -56,6 +56,11 @@ vim.keymap.set("n", "<leader>al", function()
 	print(vim.fn.system("ansible-lint " .. vim.fn.expand("%")))
 end, { noremap = true, silent = true, desc = "Run ansible-lint on current file" })
 
+-- Run ansible-lint on current file
+vim.keymap.set("n", "<leader>al", function()
+	print(vim.fn.system("ansible-lint " .. vim.fn.expand("%")))
+end, { noremap = true, silent = true, desc = "Run ansible-lint on current file" })
+
 -- Run ansible-lint --fix on current file
 vim.keymap.set("n", "<leader>alf", function()
 	local file = vim.fn.expand("%:p")
