@@ -53,7 +53,7 @@ vim.keymap.set("t", "<Esc>", '<C-\\><C-n><CMD>lua require("FTerm").close()<CR>')
 
 -- Run ansible-lint on current file
 vim.keymap.set("n", "<leader>al", function()
-	print(vim.fn.system("ansible-lint " .. vim.fn.expand("%")))
+	print(vim.fn.system("ansible-lint --nocolor " .. vim.fn.expand("%")))
 end, { noremap = true, silent = true, desc = "Run ansible-lint on current file" })
 
 -- Run ansible-lint on current file
