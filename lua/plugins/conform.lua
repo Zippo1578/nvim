@@ -6,7 +6,8 @@ return {
 			python = { "isort", "black" },
 			javascript = { "prettierd", "prettier", stop_after_first = true },
 			typescript = { "prettierd", "prettier", stop_after_first = true },
-			bash = { "bashls" },
+			bash = { "shfmt" },
+			sh = { "shfmt" },
 			yaml = { "prettierd", "prettier", stop_after_first = true },
 			-- fallback: treat yaml.ansible as yaml
 			["yaml.ansible"] = { "prettierd", "prettier", stop_after_first = true },
