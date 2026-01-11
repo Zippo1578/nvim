@@ -12,7 +12,7 @@ ENV USERNAME=${USERNAME}
 ENV HOME=/home/${USERNAME}
 
 RUN apt -y update && \
-    apt -y install ca-certificates git tar vim jq curl ripgrep luarocks fontconfig sudo make tmux gcc unzip wget \
+    apt -y install ca-certificates git tar vim jq curl ripgrep luarocks fontconfig sudo make tmux gcc unzip wget rsync \
         python3 python3-pip python3-venv python3-pynvim && \
     apt -y remove neovim && \
     apt -y clean && rm -rf /var/lib/apt/lists/*
@@ -38,6 +38,10 @@ RUN mkdir -p .config/{tmux,nvim}
 COPY --chown=${USERNAME}:${USERNAME} ./install_nvim_dependance.sh ${HOME}/install_nvim_dependance.sh
 COPY --chown=${USERNAME}:${USERNAME} ./.bashrc ${HOME}/.bashrc
 COPY --chown=${USERNAME}:${USERNAME} ./tmux.conf ${HOME}/.config/tmux/tmux.conf
+COPY --chown=${USERNAME}:${USERNAME} ./playbooks_bootstrap ${HOME}/playbooks_bootstrap
+COPY --chown=${USERNAME}:${USERNAME} ./nvim_add/ /tmp/nvim_add
+
+RUN ${HOME}/.venvs/bin/ansible-galaxy collection install -r ${HOME}/playbooks_bootstrap/collections/requirements.yml --force
 
 RUN chmod +x ${HOME}/install_nvim_dependance.sh
 

@@ -157,20 +157,30 @@ LAZY_REPO_URL="https://github.com/LazyVim/starter"
 
 echo "▶ Setting up Neovim + LazyVim..."
 
-if [ -d "$NVIM_CONFIG_DIR" ]; then
-  echo "⚠ Existing config found. Backing up..."
-  mv "$NVIM_CONFIG_DIR" "${NVIM_CONFIG_DIR}.bak.$(date +%s)"
-fi
-
 echo "▶ Cloning LazyVim starter..."
 git clone "$LAZY_REPO_URL" "$NVIM_CONFIG_DIR"
 
 echo "▶ Copying personal config..."
-rsync -av \
+rsync -av --delete \
   --exclude=".git" \
   "$ADD_LAZY_NVIM_DIR/" "$NVIM_CONFIG_DIR/"
 
 echo "✔ Neovim directory setup complete."
+
+
+### -------------------------
+### Install Neovim config (Zippo1578/nvim)
+### -------------------------
+echo "📥 Installing Neovim config from Zippo1578/nvim"
+
+# Backup existing config if present
+if [[ -d "$NVIM_CONFIG_DIR" && -n "$(ls -A "$NVIM_CONFIG_DIR" 2>/dev/null)" ]]; then
+  echo "⚠️  Existing nvim config detected — backing up"
+  mv "$NVIM_CONFIG_DIR" "${NVIM_CONFIG_DIR}.bak.$(date +%s)"
+fi
+
+git clone --depth=1 https://github.com/Zippo1578/nvim.git "$NVIM_CONFIG_DIR"
+
 
 ### -------------------------
 ### Install lazygit (latest release)

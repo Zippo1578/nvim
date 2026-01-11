@@ -6,6 +6,6 @@ services:
     tty: true
     stdin_open: true
     # disable network for runtime (no internet access after build)
-    #network_mode: "none"
+    # network_mode: "none"
     restart: "no"
 
