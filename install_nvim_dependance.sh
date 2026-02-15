@@ -42,15 +42,14 @@ fi
 
 echo "🐍 Using Python: $PYTHON_BIN"
 
-
 ### -------------------------
 ### Ensure LOCAL_BIN in PATH
 ### -------------------------
 if [[ ":$PATH:" != *":$LOCAL_BIN:"* ]]; then
   echo "➕ Adding $LOCAL_BIN to PATH in $BASHRC"
-  echo "" >> "$BASHRC"
-  echo "# Added by nvim installer on $(date)" >> "$BASHRC"
-  echo "export PATH=\"\$HOME/.local/bin:\$PATH\"" >> "$BASHRC"
+  echo "" >>"$BASHRC"
+  echo "# Added by nvim installer on $(date)" >>"$BASHRC"
+  echo "export PATH=\"\$HOME/.local/bin:\$PATH\"" >>"$BASHRC"
   export PATH="$LOCAL_BIN:$PATH"
 fi
 
@@ -59,9 +58,18 @@ fi
 ### -------------------------
 ARCH="$(uname -m)"
 case "$ARCH" in
-  x86_64) FZF_ARCH="linux_amd64"; NVIM_ARCH="linux-x86_64" ;;
-  aarch64|arm64) FZF_ARCH="linux_arm64"; NVIM_ARCH="linux-arm64" ;;
-  *) echo "❌ Unsupported architecture: $ARCH"; exit 1 ;;
+x86_64)
+  FZF_ARCH="linux_amd64"
+  NVIM_ARCH="linux-x86_64"
+  ;;
+aarch64 | arm64)
+  FZF_ARCH="linux_arm64"
+  NVIM_ARCH="linux-arm64"
+  ;;
+*)
+  echo "❌ Unsupported architecture: $ARCH"
+  exit 1
+  ;;
 esac
 
 ### -------------------------
@@ -79,7 +87,6 @@ if [ ${#MISSING_CMDS[@]} -ne 0 ]; then
   echo "❌ Missing required commands: ${MISSING_CMDS[*]}"
   exit 1
 fi
-
 
 ### -------------------------
 ### Install fzf (GitHub binary)
@@ -120,7 +127,7 @@ chmod 0750 "$LOCAL_BIN/nvim"
 
 # Ensure AppImage extracts runtime automatically
 if ! grep -q "APPIMAGE_EXTRACT_AND_RUN" "$BASHRC"; then
-  echo "export APPIMAGE_EXTRACT_AND_RUN=1" >> "$BASHRC"
+  echo "export APPIMAGE_EXTRACT_AND_RUN=1" >>"$BASHRC"
 fi
 
 "$LOCAL_BIN/nvim" --appimage-extract-and-run --version | head -n 3
@@ -140,9 +147,12 @@ TS_API="https://api.github.com/repos/tree-sitter/tree-sitter/releases/${TREESITT
 TS_TAG=$(curl -s "$TS_API" | jq -r '.tag_name')
 
 case "$ARCH" in
-  x86_64) TS_ASSET="tree-sitter-linux-x64.gz" ;;
-  aarch64|arm64) TS_ASSET="tree-sitter-linux-arm64.gz" ;;
-  *) echo "❌ Unsupported architecture for tree-sitter: $ARCH"; exit 1 ;;
+x86_64) TS_ASSET="tree-sitter-linux-x64.gz" ;;
+aarch64 | arm64) TS_ASSET="tree-sitter-linux-arm64.gz" ;;
+*)
+  echo "❌ Unsupported architecture for tree-sitter: $ARCH"
+  exit 1
+  ;;
 esac
 
 # Get download URL for the asset
@@ -201,9 +211,12 @@ LAZYGIT_API="https://api.github.com/repos/jesseduffield/lazygit/releases/${LAZYG
 
 # Determine arch mapping
 case "$ARCH" in
-  x86_64) LAZYGIT_ARCH="linux_x86_64" ;;
-  aarch64|arm64) LAZYGIT_ARCH="linux_arm64" ;;
-  *) echo "❌ Unsupported architecture for lazygit: $ARCH"; exit 1 ;;
+x86_64) LAZYGIT_ARCH="linux_x86_64" ;;
+aarch64 | arm64) LAZYGIT_ARCH="linux_arm64" ;;
+*)
+  echo "❌ Unsupported architecture for lazygit: $ARCH"
+  exit 1
+  ;;
 esac
 
 LAZYGIT_URL=$(curl -s "$LAZYGIT_API" | jq -r ".assets[] | select(.name | test(\"${LAZYGIT_ARCH}.*tar.gz$\")) | .browser_download_url")
@@ -229,7 +242,6 @@ fi
 
 echo "✅ lazygit installed: $($LOCAL_BIN/lazygit --version)"
 
-
 ### -------------------------
 ### Install Nerd Font
 ### -------------------------
@@ -250,6 +262,9 @@ fc-cache -vf "$LOCAL_FONTS"
 ### -------------------------
 
 # Download and install nvm:
+
+export NVM_DIR="$HOME/.nvm"
+mkdir -p "${NVM_DIR}"
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 
 # in lieu of restarting the shell
@@ -281,7 +296,7 @@ source ${BASHRC}
   -c 'Lazy load mason.nvim' \
   -c 'lua require("nvim-treesitter.install").update({force = true}):wait()' \
   -c 'Lazy load mason.nvim mason-lspconfig.nvim nvim-lspconfig mason-tool-installer.nvim' \
-  -c 'MasonInstall lua-language-server ansible-language-server bash-language-server stylua yaml-language-server shfmt prettierd prettier shellcheck'  \
+  -c 'MasonInstall lua-language-server ansible-language-server bash-language-server stylua yaml-language-server shfmt prettierd prettier shellcheck' \
   -c 'qa'
 
 ### -------------------------
@@ -289,4 +304,3 @@ source ${BASHRC}
 ### -------------------------
 echo "✅ Installation complete!"
 echo "Restart your shell or run: source ~/.bashrc"
-
