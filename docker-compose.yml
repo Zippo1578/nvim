@@ -1,11 +1,12 @@
 services:
   nvim:
-    build: .
-    image: nvim-ubuntu-minimal:latest
-    container_name: nvim-ubuntu
+    build:
+      context: .
+      args:
+        DISTRO: ${DISTRO} # arch or ubuntu possible
+    image: nvim-${DISTRO}:latest
+    container_name: nvim-${DISTRO}
     tty: true
     stdin_open: true
-    # disable network for runtime (no internet access after build)
-    # network_mode: "none"
     restart: "no"
 

@@ -17,7 +17,8 @@ TREESITTERCLI_VERSION="latest"
 LAZYGIT_VERSION="latest"
 NODE_JS_VERSION="24"
 NERD_FONT="Mononoki"
-REQUIRED_CMDS=(curl jq tar unzip cp chmod git tar vim python3 jq curl rg luarocks fc-cache sudo)
+REQUIRED_CMDS=(curl jq tar unzip cp chmod git tar vim jq curl rg luarocks fc-cache sudo)
+PYTHON_BIN="$(command -v python3 || command -v python || true)"
 
 NVIM_CONFIG_DIR="${HOME}/.config/nvim"
 LOCAL_BIN="${HOME}/.local/bin"
@@ -29,6 +30,18 @@ TMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TMP_DIR"' EXIT
 
 mkdir -p "$LOCAL_BIN" "$LOCAL_SHARE" "$LOCAL_FONTS"
+
+### -------------------------
+### Check Python
+### -------------------------
+
+if [ -z "$PYTHON_BIN" ]; then
+  echo "❌ Python not found"
+  exit 1
+fi
+
+echo "🐍 Using Python: $PYTHON_BIN"
+
 
 ### -------------------------
 ### Ensure LOCAL_BIN in PATH
@@ -54,12 +67,19 @@ esac
 ### -------------------------
 ### Pre-install dependency check
 ### -------------------------
+MISSING_CMDS=()
+
 for cmd in "${REQUIRED_CMDS[@]}"; do
-  if ! command -v "$cmd" >/dev/null; then
-    echo "❌ Missing required command: $cmd"
-    exit 1
+  if ! command -v "$cmd" >/dev/null 2>&1; then
+    MISSING_CMDS+=("$cmd")
   fi
 done
+
+if [ ${#MISSING_CMDS[@]} -ne 0 ]; then
+  echo "❌ Missing required commands: ${MISSING_CMDS[*]}"
+  exit 1
+fi
+
 
 ### -------------------------
 ### Install fzf (GitHub binary)
